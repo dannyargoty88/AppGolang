@@ -1,0 +1,100 @@
+package interactor
+
+import (
+	transaction "app/src/libs/transaction"
+	models "app/src/models"
+	presenter "app/src/usecase/presenter"
+	repository "app/src/usecase/repository"
+	"errors"
+)
+
+//Builder
+type {{.Name_loweruppercase}}Interactor struct{}
+
+func New{{.Name_camelcase}}Interactor() {{.Name_camelcase}}Interactor {
+	return &{{.Name_loweruppercase}}Interactor{}
+}
+
+type {{.Name_camelcase}}Interactor interface {
+	GetAll(params models.{{.Name_model}}Query) ([]models.{{.Name_model}}Response, error)
+	GetOne(id string) (*models.{{.Name_model}}Response, error)
+	Create(data_insert *models.{{.Name_model}}) (*models.{{.Name_model}}, error)
+	Update(id string, data_update *models.{{.Name_model}}) (*models.{{.Name_model}}, error)
+	Delete(id string) (*models.{{.Name_model}}, error)
+}
+
+//Methods
+func (ctrl {{.Name_loweruppercase}}Interactor) GetAll(params models.{{.Name_model}}Query) ([]models.{{.Name_model}}Response, error) {
+
+	data, err := repository.New{{.Name_camelcase}}Repository().FindAll(params)
+	if err != nil {
+		return nil, err
+	}
+	return presenter.New{{.Name_camelcase}}Presenter().ResponseAll(data), nil
+}
+
+func (ctrl {{.Name_loweruppercase}}Interactor) GetOne(id string) (*models.{{.Name_model}}Response, error) {
+
+	data, err := repository.New{{.Name_camelcase}}Repository().FindOne(id)
+	if err != nil {
+		return nil, err
+	}
+	return presenter.New{{.Name_camelcase}}Presenter().ResponseOne(data), nil
+}
+
+func (ctrl {{.Name_loweruppercase}}Interactor) Create(data_insert *models.{{.Name_model}}) (*models.{{.Name_model}}, error) {
+
+	data_transaction, err := transaction.Transaction(func(i interface{}) (interface{}, error) {
+		res, err := repository.New{{.Name_camelcase}}Repository().Create(data_insert)
+		return res, err
+	})
+
+	if !errors.Is(err, nil) {
+		return nil, err
+	}
+
+	data_resp, ok := data_transaction.(*models.{{.Name_model}})
+	if !ok {
+		return nil, errors.New("cast error Create {{.Name_loweruppercase}}")
+	}
+
+	return presenter.New{{.Name_camelcase}}Presenter().Response(data_resp), nil
+}
+
+func (ctrl {{.Name_loweruppercase}}Interactor) Update(id string, data_update *models.{{.Name_model}}) (*models.{{.Name_model}}, error) {
+
+	data_transaction, err := transaction.Transaction(func(i interface{}) (interface{}, error) {
+		res, err := repository.New{{.Name_camelcase}}Repository().Update(id, data_update)
+		return res, err
+	})
+
+	if !errors.Is(err, nil) {
+		return nil, err
+	}
+
+	data_resp, ok := data_transaction.(*models.{{.Name_model}})
+	if !ok {
+		return nil, errors.New("cast error Update {{.Name_loweruppercase}}")
+	}
+
+	return presenter.New{{.Name_camelcase}}Presenter().Response(data_resp), nil
+}
+
+func (ctrl {{.Name_loweruppercase}}Interactor) Delete(id string) (*models.{{.Name_model}}, error) {
+
+	data_transaction, err := transaction.Transaction(func(i interface{}) (interface{}, error) {
+		res, err := repository.New{{.Name_camelcase}}Repository().Delete(id)
+		return res, err
+	})
+
+	if !errors.Is(err, nil) {
+		return nil, err
+	}
+
+	data_resp, ok := data_transaction.(*models.{{.Name_model}})
+	if !ok {
+		return nil, errors.New("cast error Delete {{.Name_loweruppercase}}")
+	}
+
+	return presenter.New{{.Name_camelcase}}Presenter().Response(data_resp), nil
+}

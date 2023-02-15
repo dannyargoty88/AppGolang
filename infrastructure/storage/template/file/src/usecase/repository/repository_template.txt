@@ -1,0 +1,82 @@
+package repository
+
+import (
+	db "app/infrastructure/datastore"
+	utils "app/src/libs/utils"
+	models "app/src/models"
+	"errors"
+)
+
+//Builder
+type {{.Name_loweruppercase}}Repository struct{}
+
+func New{{.Name_camelcase}}Repository() {{.Name_camelcase}}Repository {
+	return &{{.Name_loweruppercase}}Repository{}
+}
+
+type {{.Name_camelcase}}Repository interface {
+	FindAll(params models.{{.Name_model}}Query) ([]models.{{.Name_model}}Response, error)
+	FindOne(id string) (*models.{{.Name_model}}Response, error)
+	Create(data *models.{{.Name_model}}) (*models.{{.Name_model}}, error)
+	Update(id string, data *models.{{.Name_model}}) (*models.{{.Name_model}}, error)
+	Delete(id string) (*models.{{.Name_model}}, error)
+}
+
+//Methods
+func (repo {{.Name_loweruppercase}}Repository) FindAll(params models.{{.Name_model}}Query) ([]models.{{.Name_model}}Response, error) {
+
+	var data []models.{{.Name_model}}Response
+
+	var query = db.Conn().Order("{{.Name_loweruppercase}}_codigo asc")
+
+	if params.{{.Name_abbreviationupper}}_codigo > 0 {
+		query = query.Where("{{.Name_loweruppercase}}_codigo = ?", params.{{.Name_abbreviationupper}}_codigo)
+	}
+
+	err := query.Find(&data).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func (repo {{.Name_loweruppercase}}Repository) FindOne(id string) (*models.{{.Name_model}}Response, error) {
+
+	var data models.{{.Name_model}}Response
+
+	err := db.Conn().Model(data).First(&data, []string{id}).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
+
+func (repo {{.Name_loweruppercase}}Repository) Create(data *models.{{.Name_model}}) (*models.{{.Name_model}}, error) {
+
+	if err := db.Conn().Create(data).Error; !errors.Is(err, nil) {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (repo {{.Name_loweruppercase}}Repository) Update(id string, data *models.{{.Name_model}}) (*models.{{.Name_model}}, error) {
+
+	err := db.Conn().Model(&data).Where("{{.Name_abbreviationlower}}_codigo = ?", id).Updates(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	data.{{.Name_abbreviationupper}}_codigo = utils.ConvertStr(id)
+	return data, nil
+}
+
+func (repo {{.Name_loweruppercase}}Repository) Delete(id string) (*models.{{.Name_model}}, error) {
+
+	var data models.{{.Name_model}}
+	err := db.Conn().Where("{{.Name_abbreviationlower}}_codigo = ?", id).Delete(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	return &data, nil
+}

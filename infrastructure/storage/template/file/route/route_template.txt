@@ -1,0 +1,16 @@
+package {{.Name_lowercase}}
+
+import (
+	ctrl "app/src/controllers"
+
+	"github.com/labstack/echo/v4"
+)
+
+func Routes(g *echo.Group) {
+	//Crud
+	g.GET("/{{.Name_lowercase}}", ctrl.New{{.Name_camelcase}}Controller().GetAll)
+	g.GET("/{{.Name_lowercase}}/:id", ctrl.New{{.Name_camelcase}}Controller().GetOne)
+	g.POST("/{{.Name_lowercase}}", ctrl.New{{.Name_camelcase}}Controller().Create)
+	g.PUT("/{{.Name_lowercase}}/:id", ctrl.New{{.Name_camelcase}}Controller().Update)
+	g.DELETE("/{{.Name_lowercase}}/:id", ctrl.New{{.Name_camelcase}}Controller().Delete)
+}

@@ -1,0 +1,45 @@
+database:
+  develoment:
+    user: postgres
+    password: '881019'
+    host: localhost
+    port: 5432 
+    dbname: db_testgolang
+    sslmode: disable
+    dbtype: postgres
+  test:
+    user: usuario
+    password: contrasenia
+    host: host_db
+    port: 5432 
+    dbname: db_name_qa
+    sslmode: disable
+    dbtype: postgres
+  preproduction:
+    user: usuario
+    password: contrasenia
+    host: host_db
+    port: 5432 
+    dbname: db_name_pp
+    sslmode: disable
+    dbtype: postgres
+  production:
+    user: usuario
+    password: contrasenia
+    host: host
+    port: 5432 
+    dbname: db_name_prod
+    sslmode: disable
+    dbtype: postgres
+
+JWT:
+  signingmethod: "HS512"
+  signingkeyApp: "secretMyApp"
+
+server:
+  address: 8080
+
+SERVERENV: develoment
+# SERVERENV: test
+# SERVERENV: preproduction
+# SERVERENV: production

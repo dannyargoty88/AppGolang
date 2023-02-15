@@ -1,0 +1,20 @@
+package models
+
+//input struct
+type {{.Name_model}} struct {
+	{{.Name_abbreviationupper}}_codigo   int    `json:"{{.Name_abbreviationlower}}_codigo" gorm:"primary_key"`
+}
+
+func ({{.Name_model}}) TableName() string { return "{{.Name_table}}" }
+
+//output struct
+type {{.Name_model}}Response struct {
+	{{.Name_abbreviationupper}}_codigo   int    `json:"{{.Name_abbreviationlower}}_codigo" gorm:"primary_key"`
+}
+
+func ({{.Name_model}}Response) TableName() string { return "{{.Name_table}}" }
+
+//query struct
+type {{.Name_model}}Query struct {
+	{{.Name_abbreviationupper}}_codigo int    `json:"{{.Name_abbreviationlower}}_codigo"`
+}

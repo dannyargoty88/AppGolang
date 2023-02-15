@@ -1,0 +1,31 @@
+package presenter
+
+import (
+	models "app/src/models"
+)
+
+//Builder
+type {{.Name_loweruppercase}}Presenter struct{}
+
+func New{{.Name_camelcase}}Presenter() {{.Name_camelcase}}Presenter {
+	return &{{.Name_loweruppercase}}Presenter{}
+}
+
+type {{.Name_camelcase}}Presenter interface {
+	ResponseAll(data []models.{{.Name_model}}Response) []models.{{.Name_model}}Response
+	ResponseOne(data *models.{{.Name_model}}Response) *models.{{.Name_model}}Response
+	Response(data *models.{{.Name_model}}) *models.{{.Name_model}}
+}
+
+//Methods
+func (prs {{.Name_loweruppercase}}Presenter) ResponseAll(data []models.{{.Name_model}}Response) []models.{{.Name_model}}Response {
+	return data
+}
+
+func (prs {{.Name_loweruppercase}}Presenter) ResponseOne(data *models.{{.Name_model}}Response) *models.{{.Name_model}}Response {
+	return data
+}
+
+func (prs {{.Name_loweruppercase}}Presenter) Response(data *models.{{.Name_model}}) *models.{{.Name_model}} {
+	return data
+}

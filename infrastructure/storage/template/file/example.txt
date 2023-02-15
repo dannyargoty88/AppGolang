@@ -1,0 +1,19 @@
+
+URL:
+
+http://localhost:2023/api/createendpoint (POST)
+
+BODY:
+
+{
+    "name_folderroute": "administracion",
+    "name_file": "tipocontactotelefono",
+    "name_model": "TbTipoContactoTelefono",
+    "name_table": "public.tb_tipocontactotelefono",
+    "name_camelcase": "TipoContactoTelefono",	
+    "name_lowercase": "tipocontactotelefono",
+    "name_loweruppercase": "tipoContactoTelefono",
+    "name_abbreviationupper": "Tipcontel",
+    "name_abbreviationlower": "tipcontel",
+    "name_message": "Tipo contacto telefono"
+}
